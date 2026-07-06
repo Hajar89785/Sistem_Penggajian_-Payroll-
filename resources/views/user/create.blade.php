@@ -73,6 +73,7 @@
                             <option value="">Pilih Role</option>
                             <option value="Superadmin" @selected(old('role') == 'Superadmin')>Superadmin</option>
                             <option value="Admin" @selected(old('role') == 'Admin')>Admin</option>
+                            <option value="Employee" @selected(old('role') == 'Employee')>Employee</option>
                         </select>
                         @error('role')
                             <div class="invalid-feedback">
