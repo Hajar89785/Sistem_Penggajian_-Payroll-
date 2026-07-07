@@ -65,6 +65,39 @@
                     @enderror
                 </div>
 
+                <div class="col-md-12">
+                    <label for="company_address" class="form-label required">Alamat Perusahaan</label>
+                    <textarea class="form-control @error('company_address') is-invalid  @enderror" id="company_address" name="company_address"
+                        cols="30" rows="3" required>{{ old('company_address', $setting->company_address) }}</textarea>
+                    @error('company_address')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label for="signatory_name" class="form-label required">Nama Penandatangan (Signatory)</label>
+                    <input class="form-control @error('signatory_name') is-invalid  @enderror" type="text" id="signatory_name"
+                        name="signatory_name" required value="{{ old('signatory_name', $setting->signatory_name) }}">
+                    @error('signatory_name')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label for="signatory_position" class="form-label required">Jabatan Penandatangan</label>
+                    <input class="form-control @error('signatory_position') is-invalid  @enderror" type="text" id="signatory_position"
+                        name="signatory_position" required value="{{ old('signatory_position', $setting->signatory_position) }}">
+                    @error('signatory_position')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
                 <div class="col-md-3">
                     <label for="logo" class="form-label">Logo</label>
                     <input class="form-control @error('logo') is-invalid  @enderror" type="file" id="upload"

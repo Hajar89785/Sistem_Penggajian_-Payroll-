@@ -157,9 +157,11 @@ class PayrollController extends Controller
     {
         $this->authorize('view', $payroll);
         $payroll->load(['employee.department', 'employee.position', 'payrollPeriod', 'details']);
+        $setting = \App\Models\Setting::first();
         
         return view('payroll.print', [
-            'payroll' => $payroll
+            'payroll' => $payroll,
+            'setting' => $setting
         ]);
     }
     

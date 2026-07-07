@@ -32,6 +32,9 @@ class SettingController extends Controller
             'login_title' => 'required',
             'keywords' => 'nullable',
             'description' => 'nullable',
+            'company_address' => 'required',
+            'signatory_name' => 'required',
+            'signatory_position' => 'required',
             'logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:512'
         ], [
             'app_name.required' => 'Nama aplikasi wajib diisi',

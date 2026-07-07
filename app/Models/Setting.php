@@ -11,7 +11,10 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
     'login_title',
     'keywords',
     'description',
-    'logo'
+    'logo',
+    'company_address',
+    'signatory_name',
+    'signatory_position'
 ])]
 
 class Setting extends Model

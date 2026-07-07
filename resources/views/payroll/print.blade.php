@@ -26,8 +26,8 @@
 
     <div class="slip-container">
         <div class="company-header">
-            <h2>PT. NAMA PERUSAHAAN</h2>
-            <p class="mb-0">Jl. Contoh Alamat No. 123, Kota, Indonesia</p>
+            <h2>{{ $setting->app_name }}</h2>
+            <p class="mb-0">{{ $setting->company_address }}</p>
         </div>
 
         <div class="text-center mb-4">
@@ -127,8 +127,8 @@
             <div class="col-6">
                 <p>Mengetahui,</p>
                 <br><br><br>
-                <p class="fw-bold text-decoration-underline mb-0">HRD Manager</p>
-                <p class="text-muted small">PT. Nama Perusahaan</p>
+                <p class="fw-bold text-decoration-underline mb-0">{{ $setting->signatory_name }}</p>
+                <p class="text-muted small">{{ $setting->signatory_position }} - {{ $setting->app_name }}</p>
             </div>
         </div>
     </div>

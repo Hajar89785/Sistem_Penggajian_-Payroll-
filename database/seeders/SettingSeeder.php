@@ -19,6 +19,9 @@ class SettingSeeder extends Seeder
             'login_title' => 'Halaman Login',
             'keywords' => 'admin, dashboard, laravel, niceadmin, bootstrap',
             'description' => 'Aplikasi dashboard admin menggunakan Laravel dan NiceAdmin template.',
+            'company_address' => 'Jl. Kebon Kacang No. 99, Jakarta Pusat',
+            'signatory_name' => 'John Doe',
+            'signatory_position' => 'HR Director',
         ]);
     }
 }
