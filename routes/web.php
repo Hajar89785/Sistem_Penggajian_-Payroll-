@@ -26,6 +26,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/user', UserController::class)->middleware('role:Superadmin');
 
+    // Master Data Routes
+    Route::resource('/department', \App\Http\Controllers\DepartmentController::class)->middleware('role:Superadmin,Admin');
+    Route::resource('/position', \App\Http\Controllers\PositionController::class)->middleware('role:Superadmin,Admin');
+    Route::resource('/allowance', \App\Http\Controllers\AllowanceController::class)->middleware('role:Superadmin,Admin');
+    Route::resource('/deduction', \App\Http\Controllers\DeductionController::class)->middleware('role:Superadmin,Admin');
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
 });
