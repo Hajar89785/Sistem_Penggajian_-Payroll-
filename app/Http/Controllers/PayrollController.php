@@ -144,10 +144,21 @@ class PayrollController extends Controller
 
     public function show(Payroll $payroll)
     {
+        $this->authorize('view', $payroll);
         $payroll->load(['employee.department', 'employee.position', 'payrollPeriod', 'details']);
         
         return view('payroll.show', [
             'title' => 'Rincian Slip Gaji',
+            'payroll' => $payroll
+        ]);
+    }
+    
+    public function print(Payroll $payroll)
+    {
+        $this->authorize('view', $payroll);
+        $payroll->load(['employee.department', 'employee.position', 'payrollPeriod', 'details']);
+        
+        return view('payroll.print', [
             'payroll' => $payroll
         ]);
     }

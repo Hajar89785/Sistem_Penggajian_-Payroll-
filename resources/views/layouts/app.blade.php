@@ -323,6 +323,14 @@
                     </a>
                 </li>
                 
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('report.*') ? '' : 'collapsed' }}"
+                        href="{{ route('report.index') }}">
+                        <i class='bx bx-bar-chart-alt-2'></i>
+                        <span>Laporan Penggajian</span>
+                    </a>
+                </li>
+                
                 <li class="nav-heading">Master Data</li>
                 
                 <li class="nav-item">
@@ -354,6 +362,18 @@
                         href="{{ route('deduction.index') }}">
                         <i class='bx bx-minus-circle'></i>
                         <span>Potongan</span>
+                    </a>
+                </li>
+            @endif
+            
+            @if (Auth::user()->role === 'Employee')
+                <li class="nav-heading">Penggajian Saya</li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('my_payroll.*') ? '' : 'collapsed' }}"
+                        href="{{ route('my_payroll.index') }}">
+                        <i class='bx bx-wallet'></i>
+                        <span>Slip Gaji Saya</span>
                     </a>
                 </li>
             @endif

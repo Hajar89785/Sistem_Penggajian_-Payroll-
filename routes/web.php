@@ -42,8 +42,16 @@ Route::middleware('auth')->group(function () {
     // Payroll Core Routes
     Route::get('/payroll', [\App\Http\Controllers\PayrollController::class, 'index'])->name('payroll.index')->middleware('role:Superadmin,Admin');
     Route::post('/payroll/generate', [\App\Http\Controllers\PayrollController::class, 'generate'])->name('payroll.generate')->middleware('role:Superadmin,Admin');
-    Route::get('/payroll/{payroll}', [\App\Http\Controllers\PayrollController::class, 'show'])->name('payroll.show')->middleware('role:Superadmin,Admin');
+    Route::get('/payroll/{payroll}', [\App\Http\Controllers\PayrollController::class, 'show'])->name('payroll.show'); // Diizinkan untuk Employee juga lewat Policy
+    Route::get('/payroll/{payroll}/print', [\App\Http\Controllers\PayrollController::class, 'print'])->name('payroll.print'); // Diizinkan untuk Employee juga lewat Policy
     Route::delete('/payroll/{payroll}', [\App\Http\Controllers\PayrollController::class, 'destroy'])->name('payroll.destroy')->middleware('role:Superadmin,Admin');
+    
+    // Reporting Routes
+    Route::get('/report/payroll', [\App\Http\Controllers\ReportController::class, 'index'])->name('report.index')->middleware('role:Superadmin,Admin');
+    Route::get('/report/payroll/export', [\App\Http\Controllers\ReportController::class, 'export'])->name('report.export')->middleware('role:Superadmin,Admin');
+    
+    // Employee self-service
+    Route::get('/my-payroll', [\App\Http\Controllers\MyPayrollController::class, 'index'])->name('my_payroll.index')->middleware('role:Employee');
     
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');

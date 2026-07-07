@@ -75,7 +75,10 @@
     </tfoot>
 </table>
 
-<div class="alert alert-secondary d-flex justify-content-between align-items-center">
+<div class="alert alert-secondary d-flex justify-content-between align-items-center mb-0">
     <h5 class="mb-0 fw-bold">PENERIMAAN BERSIH (A - B)</h5>
     <h4 class="mb-0 fw-bold text-primary">Rp {{ number_format($payroll->net_salary, 0, ',', '.') }}</h4>
+</div>
+<div class="mt-3 text-end">
+    <a href="{{ route('payroll.print', $payroll) }}" target="_blank" class="btn btn-primary"><i class='bx bx-printer'></i> Cetak Slip Gaji</a>
 </div>
