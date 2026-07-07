@@ -313,6 +313,16 @@
                     </a>
                 </li>
                 
+                <li class="nav-heading">Penggajian</li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('payroll.*') ? '' : 'collapsed' }}"
+                        href="{{ route('payroll.index') }}">
+                        <i class='bx bx-money'></i>
+                        <span>Proses Penggajian</span>
+                    </a>
+                </li>
+                
                 <li class="nav-heading">Master Data</li>
                 
                 <li class="nav-item">

@@ -39,6 +39,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('/payroll_period', \App\Http\Controllers\PayrollPeriodController::class)->middleware('role:Superadmin,Admin');
     Route::resource('/attendance', \App\Http\Controllers\AttendanceController::class)->middleware('role:Superadmin,Admin');
     
+    // Payroll Core Routes
+    Route::get('/payroll', [\App\Http\Controllers\PayrollController::class, 'index'])->name('payroll.index')->middleware('role:Superadmin,Admin');
+    Route::post('/payroll/generate', [\App\Http\Controllers\PayrollController::class, 'generate'])->name('payroll.generate')->middleware('role:Superadmin,Admin');
+    Route::get('/payroll/{payroll}', [\App\Http\Controllers\PayrollController::class, 'show'])->name('payroll.show')->middleware('role:Superadmin,Admin');
+    Route::delete('/payroll/{payroll}', [\App\Http\Controllers\PayrollController::class, 'destroy'])->name('payroll.destroy')->middleware('role:Superadmin,Admin');
+    
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
 });
