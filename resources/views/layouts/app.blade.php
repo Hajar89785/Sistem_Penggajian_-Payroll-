@@ -285,6 +285,16 @@
             </li>
 
             @if (in_array(Auth::user()->role, ['Superadmin', 'Admin']))
+                <li class="nav-heading">Data Karyawan</li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('employee.*') ? '' : 'collapsed' }}"
+                        href="{{ route('employee.index') }}">
+                        <i class='bx bx-user-circle'></i>
+                        <span>Karyawan</span>
+                    </a>
+                </li>
+            
                 <li class="nav-heading">Master Data</li>
                 
                 <li class="nav-item">

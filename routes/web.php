@@ -31,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/position', \App\Http\Controllers\PositionController::class)->middleware('role:Superadmin,Admin');
     Route::resource('/allowance', \App\Http\Controllers\AllowanceController::class)->middleware('role:Superadmin,Admin');
     Route::resource('/deduction', \App\Http\Controllers\DeductionController::class)->middleware('role:Superadmin,Admin');
+    
+    // Employee Routes
+    Route::resource('/employee', \App\Http\Controllers\EmployeeController::class)->middleware('role:Superadmin,Admin');
+    
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
 });
