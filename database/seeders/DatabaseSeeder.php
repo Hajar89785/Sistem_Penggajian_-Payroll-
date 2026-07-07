@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             AllowanceSeeder::class,
             DeductionSeeder::class,
             EmployeeSeeder::class,
+            PayrollPeriodSeeder::class,
+            AttendanceSeeder::class,
         ]);
     }
 }

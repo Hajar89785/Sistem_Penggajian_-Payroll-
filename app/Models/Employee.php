@@ -47,4 +47,9 @@ class Employee extends Model
     {
         return $this->belongsToMany(Deduction::class, 'employee_deductions')->withPivot('amount')->withTimestamps();
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

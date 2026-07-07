@@ -295,6 +295,24 @@
                     </a>
                 </li>
             
+                <li class="nav-heading">Kehadiran (Absensi)</li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('payroll_period.*') ? '' : 'collapsed' }}"
+                        href="{{ route('payroll_period.index') }}">
+                        <i class='bx bx-calendar'></i>
+                        <span>Periode Gaji</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('attendance.*') ? '' : 'collapsed' }}"
+                        href="{{ route('attendance.index') }}">
+                        <i class='bx bx-time'></i>
+                        <span>Rekap Absen</span>
+                    </a>
+                </li>
+                
                 <li class="nav-heading">Master Data</li>
                 
                 <li class="nav-item">
