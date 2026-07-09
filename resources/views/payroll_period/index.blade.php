@@ -5,7 +5,7 @@
             <a class="btn btn-primary" href="{{ route('payroll_period.create') }}">Tambah Periode</a>
         </div>
         <div class="table-responsive">
-            <table class="table table-bordered table-striped" id="data-table">
+            <table class="table table-bordered table-striped w-100" id="data-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -27,11 +27,15 @@
                             <span class="badge bg-{{ $p->status == 'Final' ? 'success' : 'warning' }}">{{ $p->status }}</span>
                         </td>
                         <td>
-                            <a href="{{ route('payroll_period.edit', $p) }}" class="btn btn-warning btn-sm"><i class='bx bx-edit-alt'></i></a>
-                            <button type="button" class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-route="{{ route('payroll_period.destroy', $p) }}">
-                                <i class='bx bx-trash'></i>
-                            </button>
+                            @if ($p->status != 'Final' || Auth::user()->role == 'Superadmin')
+                                <a href="{{ route('payroll_period.edit', $p) }}" class="btn btn-warning btn-sm"><i class='bx bx-edit-alt'></i></a>
+                                <button type="button" class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal" data-route="{{ route('payroll_period.destroy', $p) }}">
+                                    <i class='bx bx-trash'></i>
+                                </button>
+                            @else
+                                <span class="text-muted"><i class='bx bx-lock'></i> Terkunci</span>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

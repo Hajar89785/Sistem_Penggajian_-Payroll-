@@ -61,7 +61,7 @@
         <div class="card shadow-lg p-3">
             <h5 class="mb-3">Agregat Total Pengeluaran Gaji per Periode</h5>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped w-100">
                     <thead class="table-dark">
                         <tr>
                             <th>Periode</th>

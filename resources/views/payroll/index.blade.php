@@ -28,7 +28,7 @@
 
     <div class="card shadow-lg p-3">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped" id="data-table">
+            <table class="table table-bordered table-striped w-100" id="data-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -39,7 +39,7 @@
                         <th>Total Potongan</th>
                         <th>Gaji Bersih (Net)</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,15 +58,17 @@
                         <td>
                             <span class="badge bg-{{ $p->status == 'Paid' ? 'success' : 'warning' }}">{{ $p->status }}</span>
                         </td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm btn-detail"
-                                data-route="{{ route('payroll.show', $p) }}">
-                                <i class='bx bx-show'></i> Detail
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" data-route="{{ route('payroll.destroy', $p) }}">
-                                <i class='bx bx-trash'></i>
-                            </button>
+                        <td class="text-center">
+                            <div class="d-flex gap-2 justify-content-center">
+                                <button type="button" class="btn btn-info btn-sm btn-detail"
+                                    data-route="{{ route('payroll.show', $p) }}">
+                                    <i class='bx bx-show'></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal" data-route="{{ route('payroll.destroy', $p) }}">
+                                    <i class='bx bx-trash'></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     @endforeach

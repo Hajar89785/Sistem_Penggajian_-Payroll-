@@ -144,7 +144,7 @@ class PayrollController extends Controller
 
     public function show(Payroll $payroll)
     {
-        $this->authorize('view', $payroll);
+        \Illuminate\Support\Facades\Gate::authorize('view', $payroll);
         $payroll->load(['employee.department', 'employee.position', 'payrollPeriod', 'details']);
         
         return view('payroll.show', [
@@ -155,7 +155,7 @@ class PayrollController extends Controller
     
     public function print(Payroll $payroll)
     {
-        $this->authorize('view', $payroll);
+        \Illuminate\Support\Facades\Gate::authorize('view', $payroll);
         $payroll->load(['employee.department', 'employee.position', 'payrollPeriod', 'details']);
         $setting = \App\Models\Setting::first();
         

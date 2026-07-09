@@ -20,7 +20,7 @@
 
     <div class="card shadow-lg p-3">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped" id="data-table">
+            <table class="table table-bordered table-striped w-100" id="data-table">
                 <thead>
                     <tr>
                         <th>#</th>

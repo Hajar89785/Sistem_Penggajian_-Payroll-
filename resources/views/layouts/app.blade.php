@@ -78,6 +78,7 @@
 
         #main {
             flex: 1;
+            min-width: 0;
         }
 
         .footer {
@@ -478,9 +479,17 @@
     <script src="{{ asset('niceadmin/js/main.js') }}"></script>
 
     <script>
-        new DataTable('#data-table', {
+        let dataTable = new DataTable('#data-table', {
             pageLength: 5,
             lengthMenu: [5, 10, 25, 50, 100]
+        });
+
+        $('.toggle-sidebar-btn').on('click', function() {
+            setTimeout(function() {
+                if (dataTable) {
+                    dataTable.columns.adjust().draw();
+                }
+            }, 300);
         });
 
         $('.form').parsley({

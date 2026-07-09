@@ -49,16 +49,21 @@ class EmployeeSeeder extends Seeder
             ]);
         }
 
-        // 2. Generate 9 more dummy employees
+        $faker = \Faker\Factory::create('id_ID');
+
+        // 2. Generate 9 more employees with natural local names
         for ($i = 2; $i <= 10; $i++) {
             $randomPosition = $positions->random();
+            $gender = $faker->randomElement(['male', 'female']);
+            $fullName = $faker->name($gender);
+            
             $emp = Employee::create([
                 'user_id' => null, // No user account
                 'department_id' => $departments->random()->id,
                 'position_id' => $randomPosition->id,
                 'employee_code' => 'EMP-' . str_pad($i, 3, '0', STR_PAD_LEFT),
-                'full_name' => 'Karyawan Dummy ' . $i,
-                'email' => 'karyawan' . $i . '@example.com',
+                'full_name' => $fullName,
+                'email' => strtolower(str_replace(' ', '.', $fullName)) . '@example.com',
                 'phone' => '081234567' . str_pad($i, 3, '0', STR_PAD_LEFT),
                 'join_date' => now()->subMonths(rand(1, 24))->format('Y-m-d'),
                 'basic_salary' => $randomPosition->basic_salary,
