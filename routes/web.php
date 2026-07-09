@@ -6,10 +6,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::middleware('guest')->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login');
     Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('login.authenticate');
