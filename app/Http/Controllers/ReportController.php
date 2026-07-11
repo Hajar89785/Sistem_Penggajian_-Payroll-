@@ -46,47 +46,8 @@ class ReportController extends Controller
     public function export(Request $request)
     {
         $period_id = $request->get('period_id');
+        $filename = "Laporan_Gaji_" . date('Y-m-d_H-i-s') . ".xlsx";
         
-        $payrolls = Payroll::with(['employee', 'payrollPeriod']);
-        if ($period_id) {
-            $payrolls->where('payroll_period_id', $period_id);
-        }
-        
-        $payrolls = $payrolls->get();
-        
-        $filename = "Laporan_Gaji_" . date('Y-m-d_H-i-s') . ".csv";
-        
-        $headers = array(
-            "Content-type"        => "text/csv",
-            "Content-Disposition" => "attachment; filename=$filename",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
-        );
-        
-        $columns = ['ID', 'Periode', 'NIK', 'Nama Karyawan', 'Gaji Pokok', 'Total Tunjangan', 'Total Potongan', 'Penerimaan Bersih', 'Tanggal Cetak'];
-        
-        $callback = function() use($payrolls, $columns) {
-            $file = fopen('php://output', 'w');
-            fputcsv($file, $columns);
-            
-            foreach ($payrolls as $p) {
-                $row['ID'] = $p->id;
-                $row['Periode'] = $p->payrollPeriod->name;
-                $row['NIK'] = $p->employee->employee_code;
-                $row['Nama Karyawan'] = $p->employee->full_name;
-                $row['Gaji Pokok'] = $p->basic_salary;
-                $row['Total Tunjangan'] = $p->total_allowances;
-                $row['Total Potongan'] = $p->total_deductions;
-                $row['Penerimaan Bersih'] = $p->net_salary;
-                $row['Tanggal Cetak'] = date('Y-m-d');
-                
-                fputcsv($file, array($row['ID'], $row['Periode'], $row['NIK'], $row['Nama Karyawan'], $row['Gaji Pokok'], $row['Total Tunjangan'], $row['Total Potongan'], $row['Penerimaan Bersih'], $row['Tanggal Cetak']));
-            }
-            
-            fclose($file);
-        };
-        
-        return response()->stream($callback, 200, $headers);
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\PayrollExport($period_id), $filename);
     }
 }

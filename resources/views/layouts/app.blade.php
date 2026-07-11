@@ -536,6 +536,14 @@
                 icon: "error"
             });
         }
+
+        @if($errors->any())
+            Swal.fire({
+                title: "Validasi Gagal",
+                html: "{!! implode('<br>', $errors->all()) !!}",
+                icon: "error"
+            });
+        @endif
     </script>
 
     @stack('scripts')

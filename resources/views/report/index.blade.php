@@ -14,7 +14,7 @@
             </div>
             <div class="col-md-8 text-end">
                 <a href="{{ route('report.export', ['period_id' => $selected_period]) }}" class="btn btn-success">
-                    <i class='bx bx-export'></i> Export CSV
+                    <i class='bx bx-file'></i> Export Excel
                 </a>
             </div>
         </form>
@@ -23,35 +23,70 @@
     @if($selected_period && $summary)
         <!-- Single Period Summary -->
         <div class="row g-4 mb-4">
-            <div class="col-md-3">
-                <div class="card bg-primary text-white shadow-sm">
+            <!-- Card Karyawan -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card info-card customers-card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="card-title text-white-50">Total Karyawan Digaji</h6>
-                        <h3 class="mb-0">{{ $summary->total_employees ?? 0 }}</h3>
+                        <h5 class="card-title">Total Karyawan <span>| Digaji</span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-primary text-white" style="width: 50px; height: 50px; font-size: 24px;">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{ $summary->total_employees ?? 0 }}</h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card bg-info text-white shadow-sm">
+
+            <!-- Card Gaji Pokok -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card info-card revenue-card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="card-title text-white-50">Total Gaji Pokok</h6>
-                        <h3 class="mb-0">Rp {{ number_format($summary->total_basic_salary ?? 0, 0, ',', '.') }}</h3>
+                        <h5 class="card-title">Gaji Pokok <span>| Total</span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-info text-white" style="width: 50px; height: 50px; font-size: 24px;">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>Rp {{ number_format($summary->total_basic_salary ?? 0, 0, ',', '.') }}</h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card bg-danger text-white shadow-sm">
+
+            <!-- Card Potongan -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card info-card sales-card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="card-title text-white-50">Total Potongan</h6>
-                        <h3 class="mb-0">Rp {{ number_format($summary->total_deductions ?? 0, 0, ',', '.') }}</h3>
+                        <h5 class="card-title">Potongan <span>| Total</span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-danger text-white" style="width: 50px; height: 50px; font-size: 24px;">
+                                <i class="bi bi-graph-down-arrow"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>Rp {{ number_format($summary->total_deductions ?? 0, 0, ',', '.') }}</h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card bg-success text-white shadow-sm">
+
+            <!-- Card Net -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card info-card revenue-card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="card-title text-white-50">Total Pengeluaran (Net)</h6>
-                        <h3 class="mb-0">Rp {{ number_format($summary->total_net_salary ?? 0, 0, ',', '.') }}</h3>
+                        <h5 class="card-title">Pengeluaran <span>| Net</span></h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success text-white" style="width: 50px; height: 50px; font-size: 24px;">
+                                <i class="bi bi-wallet2"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>Rp {{ number_format($summary->total_net_salary ?? 0, 0, ',', '.') }}</h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
