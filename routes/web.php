@@ -39,16 +39,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/payroll', [\App\Http\Controllers\PayrollController::class, 'index'])->name('payroll.index')->middleware('role:Superadmin,Admin');
     Route::post('/payroll/generate', [\App\Http\Controllers\PayrollController::class, 'generate'])->name('payroll.generate')->middleware('role:Superadmin,Admin');
     Route::get('/payroll/{payroll}', [\App\Http\Controllers\PayrollController::class, 'show'])->name('payroll.show'); // Diizinkan untuk Employee juga lewat Policy
+    Route::get('/payroll/{payroll}/edit', [\App\Http\Controllers\PayrollController::class, 'edit'])->name('payroll.edit')->middleware('role:Superadmin,Admin');
+    Route::put('/payroll/{payroll}', [\App\Http\Controllers\PayrollController::class, 'update'])->name('payroll.update')->middleware('role:Superadmin,Admin');
     Route::get('/payroll/{payroll}/print', [\App\Http\Controllers\PayrollController::class, 'print'])->name('payroll.print'); // Diizinkan untuk Employee juga lewat Policy
+    Route::post('/payroll/{payroll}/pay', [\App\Http\Controllers\PayrollController::class, 'pay'])->name('payroll.pay')->middleware('role:Superadmin,Admin');
     Route::delete('/payroll/{payroll}', [\App\Http\Controllers\PayrollController::class, 'destroy'])->name('payroll.destroy')->middleware('role:Superadmin,Admin');
     
     // Reporting Routes
     Route::get('/report/payroll', [\App\Http\Controllers\ReportController::class, 'index'])->name('report.index')->middleware('role:Superadmin,Admin');
     Route::get('/report/payroll/export', [\App\Http\Controllers\ReportController::class, 'export'])->name('report.export')->middleware('role:Superadmin,Admin');
+    Route::get('/report/payroll/export-pdf', [\App\Http\Controllers\ReportController::class, 'exportPdf'])->name('report.export_pdf')->middleware('role:Superadmin,Admin');
     
     // Employee self-service
     Route::get('/my-payroll', [\App\Http\Controllers\MyPayrollController::class, 'index'])->name('my_payroll.index')->middleware('role:Employee');
     
+    // Global Search
+    Route::get('/search', [\App\Http\Controllers\SearchController::class, 'globalSearch'])->name('search.global');
+
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
 });

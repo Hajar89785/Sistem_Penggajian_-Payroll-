@@ -152,6 +152,35 @@ class PayrollController extends Controller
             'payroll' => $payroll
         ]);
     }
+
+    public function edit(Payroll $payroll)
+    {
+        $payroll->load(['employee']);
+        return view('payroll.edit', [
+            'title' => 'Edit Gaji Karyawan',
+            'payroll' => $payroll
+        ]);
+    }
+
+    public function update(Request $request, Payroll $payroll)
+    {
+        $request->validate([
+            'basic_salary' => 'required|numeric',
+            'total_allowances' => 'required|numeric',
+            'total_deductions' => 'required|numeric',
+        ]);
+
+        $net_salary = $request->basic_salary + $request->total_allowances - $request->total_deductions;
+
+        $payroll->update([
+            'basic_salary' => $request->basic_salary,
+            'total_allowances' => $request->total_allowances,
+            'total_deductions' => $request->total_deductions,
+            'net_salary' => $net_salary
+        ]);
+
+        return to_route('payroll.index')->withSuccess('Data gaji berhasil diperbarui');
+    }
     
     public function print(Payroll $payroll)
     {
@@ -175,6 +204,31 @@ class PayrollController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withError('Gagal menghapus data: ' . $e->getMessage());
+        }
+    }
+
+    public function pay(Payroll $payroll)
+    {
+        DB::beginTransaction();
+        try {
+            $payroll->update(['status' => 'Paid']);
+            
+            // Cek apakah semua payroll di periode yang sama sudah paid
+            $period_id = $payroll->payroll_period_id;
+            
+            $pendingCount = Payroll::where('payroll_period_id', $period_id)
+                ->where('status', '!=', 'Paid')
+                ->count();
+                
+            if ($pendingCount == 0) {
+                PayrollPeriod::where('id', $period_id)->update(['status' => 'Final']);
+            }
+            
+            DB::commit();
+            return back()->withSuccess('Status gaji berhasil diubah menjadi Paid (Terbayar).');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withError('Gagal melakukan pembayaran: ' . $e->getMessage());
         }
     }
 }

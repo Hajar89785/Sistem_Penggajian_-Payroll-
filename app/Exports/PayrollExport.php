@@ -34,7 +34,7 @@ class PayrollExport implements FromCollection, WithHeadings, WithMapping, WithSt
 
     public function collection()
     {
-        $payrolls = Payroll::with(['employee', 'payrollPeriod']);
+        $payrolls = Payroll::with(['employee', 'payrollPeriod'])->whereIn('status', ['Paid', 'Final']);
         if ($this->period_id) {
             $payrolls->where('payroll_period_id', $this->period_id);
         }

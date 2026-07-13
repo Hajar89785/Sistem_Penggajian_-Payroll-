@@ -2,15 +2,17 @@
     <x-slot:title>{{ $title }}</x-slot:title>
     
     <div class="card shadow-lg p-3 mb-4">
-        <form action="{{ route('payroll.index') }}" method="GET" class="row g-3 align-items-end">
+        <div class="row g-3 align-items-end">
             <div class="col-md-4">
-                <label class="form-label">Filter Periode Gaji</label>
-                <select name="period_id" class="form-select select2-default" onchange="this.form.submit()">
-                    <option value="">Semua Periode</option>
-                    @foreach($periods as $p)
-                        <option value="{{ $p->id }}" @selected($selected_period == $p->id)>{{ $p->name }}</option>
-                    @endforeach
-                </select>
+                <form action="{{ route('payroll.index') }}" method="GET" id="filter-form">
+                    <label class="form-label">Filter Periode Gaji</label>
+                    <select name="period_id" class="form-select select2-default" onchange="document.getElementById('filter-form').submit()">
+                        <option value="">Semua Periode</option>
+                        @foreach($periods as $p)
+                            <option value="{{ $p->id }}" @selected($selected_period == $p->id)>{{ $p->name }}</option>
+                        @endforeach
+                    </select>
+                </form>
             </div>
             @if($selected_period)
             <div class="col-md-8 text-end">
@@ -23,7 +25,7 @@
                 </form>
             </div>
             @endif
-        </form>
+        </div>
     </div>
 
     <div class="card shadow-lg p-3">
@@ -61,13 +63,37 @@
                         <td class="text-center">
                             <div class="d-flex gap-2 justify-content-center">
                                 <button type="button" class="btn btn-info btn-sm btn-detail"
-                                    data-route="{{ route('payroll.show', $p) }}">
+                                    data-route="{{ route('payroll.show', $p) }}" title="Lihat Detail">
                                     <i class='bx bx-show'></i>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal" data-route="{{ route('payroll.destroy', $p) }}">
-                                    <i class='bx bx-trash'></i>
-                                </button>
+                                
+                                @if (in_array($p->status, ['Paid', 'Final']))
+                                    @if (Auth::user()->role == 'Superadmin')
+                                        <a href="{{ route('payroll.edit', $p) }}" class="btn btn-warning btn-sm" title="Edit Data (Bypass Superadmin)">
+                                            <i class='bx bx-edit-alt'></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal" data-route="{{ route('payroll.destroy', $p) }}" title="Hapus Data (Bypass Superadmin)">
+                                            <i class='bx bx-trash'></i>
+                                        </button>
+                                    @else
+                                        <span class="badge bg-secondary" title="Data Terkunci untuk Admin"><i class="bx bx-lock-alt"></i> Terkunci</span>
+                                    @endif
+                                @else
+                                    <form action="{{ route('payroll.pay', $p) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Konfirmasi pembayaran gaji ini (Tandai sebagai Paid)?')" title="Bayar">
+                                            <i class='bx bx-check'></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('payroll.edit', $p) }}" class="btn btn-warning btn-sm" title="Edit Data">
+                                        <i class='bx bx-edit-alt'></i>
+                                    </a>
+                                    <button type="button" class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal" data-route="{{ route('payroll.destroy', $p) }}" title="Hapus Data">
+                                        <i class='bx bx-trash'></i>
+                                    </button>
+                                @endif
                             </div>
                         </td>
                     </tr>

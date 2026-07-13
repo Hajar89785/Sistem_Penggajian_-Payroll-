@@ -16,6 +16,9 @@
                 <a href="{{ route('report.export', ['period_id' => $selected_period]) }}" class="btn btn-success">
                     <i class='bx bx-file'></i> Export Excel
                 </a>
+                <a href="{{ route('report.export_pdf', ['period_id' => $selected_period]) }}" class="btn btn-danger ms-2">
+                    <i class='bx bxs-file-pdf'></i> Export PDF
+                </a>
             </div>
         </form>
     </div>

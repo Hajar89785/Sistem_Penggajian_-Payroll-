@@ -6,20 +6,56 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Employee;
+use App\Models\Payroll;
+use App\Models\PayrollPeriod;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalUsers = \App\Models\User::count();
-        $superadminCount = \App\Models\User::where('role', 'Superadmin')->count();
-        $adminCount = \App\Models\User::where('role', 'Admin')->count();
+        // 1. Data Top Cards (Murni dari Database)
+        $totalEmployees = Employee::count();
+        $totalExpense = Payroll::sum('net_salary');
+        $totalUsers = User::count();
+        
+        $activePeriod = PayrollPeriod::latest()->first(); // Ambil periode terbaru
+
+        // 2. Data Grafik History Payroll (6 bulan terakhir) (Menggunakan Collection agar support SQLite)
+        $chartData = Payroll::latest()->get()->groupBy(function($date) {
+            return \Carbon\Carbon::parse($date->created_at)->format('M Y'); // ex: Jun 2025
+        })->map(function ($row) {
+            return $row->sum('net_salary');
+        })->take(6)->reverse();
+
+        $chartLabels = $chartData->keys()->toArray();
+        $chartSeries = $chartData->values()->toArray();
+
+        // 3. Data Tabel Bawah (5 Karyawan dengan payroll terakhir)
+        $recentPayrolls = Payroll::with(['employee.position', 'payrollPeriod'])
+                            ->latest()
+                            ->take(5)
+                            ->get();
+
+        // 4. Data Pay Run (Statistik dari periode aktif)
+        $payRunGross = Payroll::sum('basic_salary') + DB::table('payroll_details')->where('type', 'allowance')->sum('amount'); // Asumsi sederhana gross
+        $payRunDeduction = DB::table('payroll_details')->where('type', 'deduction')->sum('amount');
+
+        $periods = PayrollPeriod::orderBy('start_date', 'desc')->get();
 
         return view('dashboard.index', [
-            'title' => 'Dashboard',
+            'title' => 'Payment Details',
+            'totalEmployees' => $totalEmployees,
+            'totalExpense' => $totalExpense,
             'totalUsers' => $totalUsers,
-            'superadminCount' => $superadminCount,
-            'adminCount' => $adminCount,
+            'activePeriod' => $activePeriod,
+            'chartLabels' => $chartLabels,
+            'chartSeries' => $chartSeries,
+            'recentPayrolls' => $recentPayrolls,
+            'payRunGross' => $payRunGross,
+            'payRunDeduction' => $payRunDeduction,
+            'periods' => $periods
         ]);
     }
 
