@@ -26,12 +26,12 @@
                     },
                     colors: {
                         brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb', // Matches the modern blue theme
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
+                            50: '#f4ebff',
+                            100: '#e0caff',
+                            500: '#8b5cf6',
+                            600: '#7B3DFF', // Main system purple
+                            700: '#6a38f5',
+                            900: '#4a15c8',
                         }
                     }
                 }
