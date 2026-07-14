@@ -14,6 +14,7 @@ class ReportController extends Controller
         $periods = PayrollPeriod::orderBy('start_date', 'desc')->get();
         
         $summary = null;
+        $payrolls = [];
         if ($period_id) {
             $summary = Payroll::where('payroll_period_id', $period_id)
                 ->whereIn('status', ['Paid', 'Final'])
@@ -23,6 +24,11 @@ class ReportController extends Controller
                 ->selectRaw('SUM(total_deductions) as total_deductions')
                 ->selectRaw('SUM(net_salary) as total_net_salary')
                 ->first();
+                
+            $payrolls = Payroll::with(['employee.department', 'employee.position', 'attendance'])
+                ->where('payroll_period_id', $period_id)
+                ->whereIn('status', ['Paid', 'Final'])
+                ->get();
         } else {
             // Aggregate per period
             $summary = Payroll::whereIn('status', ['Paid', 'Final'])
@@ -41,7 +47,8 @@ class ReportController extends Controller
             'title' => 'Laporan Rekapitulasi Gaji',
             'periods' => $periods,
             'selected_period' => $period_id,
-            'summary' => $summary
+            'summary' => $summary,
+            'payrolls' => $payrolls
         ]);
     }
 

@@ -34,4 +34,11 @@ class Payroll extends Model
     {
         return $this->hasMany(PayrollDetail::class);
     }
+
+    public function attendance()
+    {
+        // Relasi attendance (berdasarkan employee dan periode yang sama)
+        return $this->hasOne(Attendance::class, 'employee_id', 'employee_id')
+                    ->where('payroll_period_id', $this->payroll_period_id);
+    }
 }

@@ -95,20 +95,33 @@ class PayrollController extends Controller
                     ];
                 }
 
-                // 4. Hitung Denda Alpa (Gaji Pokok / 22 * Hari Alpa)
-                if ($attendance->absent_days > 0) {
-                    $absent_deduction = ($basic_salary / 22) * $attendance->absent_days;
+                // 4. Hitung Denda Alpa
+                // Hari kerja standar sebulan = 22 hari
+                $expected_working_days = 22;
+                $total_attended = $attendance->present_days + $attendance->sick_days + $attendance->leave_days;
+                
+                // Gunakan absent_days yang diinput jika ada, jika 0 maka hitung selisihnya
+                $actual_absent_days = $attendance->absent_days > 0 
+                                      ? $attendance->absent_days 
+                                      : max(0, $expected_working_days - $total_attended);
+
+                if ($actual_absent_days > 0) {
+                    $absent_deduction = ($basic_salary / 22) * $actual_absent_days;
                     // Bulatkan
                     $absent_deduction = round($absent_deduction);
                     $total_deduction += $absent_deduction;
                     $details[] = [
-                        'component_name' => 'Potongan Alpa (' . $attendance->absent_days . ' hari)',
+                        'component_name' => 'Potongan Alpa (' . $actual_absent_days . ' hari)',
                         'component_type' => 'Deduction',
                         'amount' => $absent_deduction
                     ];
                 }
 
                 $net_salary = $basic_salary + $total_allowance - $total_deduction;
+                // Pastikan gaji bersih tidak minus
+                if ($net_salary < 0) {
+                    $net_salary = 0;
+                }
 
                 // Simpan transaksi utama
                 $payroll = Payroll::create([

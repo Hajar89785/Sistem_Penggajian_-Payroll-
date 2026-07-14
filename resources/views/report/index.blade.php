@@ -94,6 +94,8 @@
                 </div>
             </div>
         </div>
+        
+
     @elseif(!$selected_period && $summary)
         <!-- All Periods Aggregation -->
         <div class="card shadow-lg p-3">
