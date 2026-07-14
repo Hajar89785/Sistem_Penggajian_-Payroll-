@@ -155,8 +155,12 @@
 
     <!-- 1. Payroll Breakdown / Top Cards -->
     <div class="row mb-4">
+        @php
+            $colClass = Auth::user()->role === 'Superadmin' ? 'col-md-3' : 'col-md-4';
+        @endphp
+        
         <!-- Total Karyawan -->
-        <div class="col-md-3">
+        <div class="{{ $colClass }}">
             <div class="metric-card">
                 <div class="d-flex align-items-center">
                     <div class="icon-box" style="background: #F2EEFF; color: var(--payflow-purple);">
@@ -169,7 +173,7 @@
             </div>
         </div>
         <!-- Total Pengeluaran -->
-        <div class="col-md-3">
+        <div class="{{ $colClass }}">
             <div class="metric-card">
                 <div class="d-flex align-items-center">
                     <div class="icon-box" style="background: #FFF1F0; color: #FF4D4F;">
@@ -181,8 +185,10 @@
                 <p class="text-success"><i class="bi bi-arrow-up-short"></i> 7% increase since last month</p>
             </div>
         </div>
+        
+        @if(Auth::user()->role === 'Superadmin')
         <!-- Total Users -->
-        <div class="col-md-3">
+        <div class="{{ $colClass }}">
             <div class="metric-card">
                 <div class="d-flex align-items-center">
                     <div class="icon-box" style="background: #E6F7FF; color: #1890FF;">
@@ -194,8 +200,10 @@
                 <p style="color: var(--payflow-text-muted);">{{ $totalEmployees }} Karyawan</p>
             </div>
         </div>
+        @endif
+        
         <!-- Periode Gaji Aktif -->
-        <div class="col-md-3">
+        <div class="{{ $colClass }}">
             <div class="metric-card">
                 <div class="d-flex align-items-center">
                     <div class="icon-box" style="background: #FFFBE6; color: #FAAD14;">
