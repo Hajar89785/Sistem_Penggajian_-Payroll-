@@ -13,11 +13,11 @@ class MyPayrollController extends Controller
         $user = Auth::user();
         
         if ($user->role !== 'Employee') {
-            return redirect('/')->withError('Halaman ini khusus untuk Karyawan.');
+            return redirect('/dashboard')->withError('Halaman ini khusus untuk Karyawan.');
         }
 
         if (!$user->employee) {
-            return redirect('/')->withError('Profil karyawan Anda belum terhubung dengan akun ini. Hubungi HRD.');
+            return redirect('/dashboard')->withError('Profil karyawan Anda belum terhubung dengan akun ini. Hubungi HRD.');
         }
 
         $payrolls = Payroll::with(['payrollPeriod'])

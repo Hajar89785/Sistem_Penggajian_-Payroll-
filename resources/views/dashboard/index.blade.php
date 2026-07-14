@@ -142,6 +142,7 @@
     </style>
 
     <div class="page-title-box">
+    @if(in_array(Auth::user()->role, ['Admin', 'Superadmin']))
         <div>
             <h3>Dashboard Utama</h3>
             <p>Kelola pembayaran gaji, pantau proses, dan tinjau laporan keuangan.</p>
@@ -339,6 +340,46 @@
             </table>
         </div>
     </div>
+    @elseif(Auth::user()->role === 'Employee')
+    <div class="row mt-4 justify-content-center">
+        <div class="col-12 col-lg-9 col-xl-8">
+            <div class="card shadow border-0" style="border-radius: 16px; background: linear-gradient(135deg, #f4ebff 0%, #ffffff 100%);">
+                <div class="card-body p-5 text-center">
+                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('niceadmin/img/noprofil.png') }}" alt="Profile" class="rounded-circle mb-3 border border-3 border-white shadow-sm" width="100" height="100" style="object-fit: cover;">
+                    <h2 class="fw-bold" style="color: var(--payflow-purple);">Selamat Datang Kembali, {{ Auth::user()->name }}!</h2>
+                    <p class="text-muted mb-4">Pantau slip gaji terbaru Anda dan kelola informasi pribadi dengan mudah.</p>
+                    
+                    @php
+                        $latestPayroll = null;
+                        if(Auth::user()->employee) {
+                            $latestPayroll = \App\Models\Payroll::where('employee_id', Auth::user()->employee->id)->latest()->first();
+                        }
+                    @endphp
+                    
+                    @if($latestPayroll)
+                        <div class="alert alert-info d-inline-block text-start mb-4 shadow-sm" style="background: #fff; border-color: #EBECEF; border-radius: 12px; padding: 15px 25px;">
+                            <h6 class="fw-bold mb-1 text-dark">Status Gaji Terakhir ({{ $latestPayroll->payrollPeriod->name ?? '-' }})</h6>
+                            <div class="d-flex align-items-center mt-2">
+                                <h3 class="mb-0 me-3 text-primary fw-bold">Rp{{ number_format($latestPayroll->net_salary, 0, ',', '.') }}</h3>
+                                @if(in_array(strtolower($latestPayroll->status), ['paid', 'final']))
+                                    <span class="badge bg-success rounded-pill px-3 py-2"><i class="bx bx-check-circle"></i> Sudah Dibayar</span>
+                                @else
+                                    <span class="badge bg-warning rounded-pill px-3 py-2 text-dark"><i class="bx bx-time-five"></i> Menunggu Pembayaran</span>
+                                @endif
+                            </div>
+                        </div>
+                        <br>
+                    @endif
+
+                    <a href="{{ route('my_payroll.index') }}" class="btn btn-purple btn-lg px-4 shadow-sm">
+                        <i class="bx bx-wallet me-2"></i> Lihat Slip Gaji Saya
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
 
     @push('modals')
         <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
